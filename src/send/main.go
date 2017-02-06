@@ -20,8 +20,8 @@ func init() {
 	flag.BoolVar(&receive, "r", false, "Set receive mode")
 	flag.Parse()
 
-	_, port, _ := net.SplitHostPort(host)
-	if port == "" {
+	h, port, _ := net.SplitHostPort(host)
+	if port == "" && h != "" {
 		host += ":30123"
 	}
 	if host == "" && !receive {

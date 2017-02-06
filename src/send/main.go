@@ -20,13 +20,17 @@ func init() {
 	flag.BoolVar(&receive, "r", false, "Set receive mode")
 	flag.Parse()
 
-	h, port, _ := net.SplitHostPort(host)
-	if port == "" && h != "" {
-		host += ":30123"
-	}
 	if host == "" && !receive {
 		flag.Usage()
 		os.Exit(1)
+	}
+
+	h, port, err := net.SplitHostPort(host)
+	if (port == "" && h != "") || err != nil {
+		if host == "" || host[len(host)-1] != ':' {
+			host += ":"
+		}
+		host += "30123"
 	}
 
 	netType = strings.TrimSpace(strings.ToLower(netType))
